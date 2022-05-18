@@ -13,4 +13,6 @@ import lombok.Setter;
 public class StepContext implements Serializable {
 
     private static final long serialVersionUID = 9055652376120831375L;
+
+    private String errorCode;
 }

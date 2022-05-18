@@ -1,7 +1,7 @@
-package com.shon.step.demostep.s2_puticebox;
+package com.shon.step.test.demostep.s2_puticebox;
 
 import com.shon.step.core.anotation.Step;
-import com.shon.step.demostep.DemoStepContext;
+import com.shon.step.test.demostep.DemoStepContext;
 import com.shon.step.core.template.AbstractStep;
 
 @Step(desc = "放入冰箱")

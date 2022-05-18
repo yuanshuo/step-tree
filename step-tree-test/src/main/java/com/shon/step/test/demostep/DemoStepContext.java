@@ -1,4 +1,4 @@
-package com.shon.step.demostep;
+package com.shon.step.test.demostep;
 
 import com.shon.step.core.template.StepContext;
 

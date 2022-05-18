@@ -2,6 +2,7 @@ package com.shon.step.core.util;
 
 import java.io.File;
 import java.lang.annotation.ElementType;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.List;
 
@@ -43,13 +44,26 @@ public class FileClassReader {
                 try {
                     Class<?> clazz = Class.forName(classFullName);
                     StepNode node = new StepNode();
+                    // 反射获取方法
+                    try {
+                        Method method = clazz.getMethod("getNameTest");
+                        if (null != method) {
+                            Object obj = clazz.newInstance();
+                            Object res = method.invoke(obj);
+                            node.setErrorCodes(res);
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+
                     node.setCodeType(ElementType.TYPE);
                     node.setCodePkgPath(pkgPath);
                     node.setCodeClazz(clazz);
                     node.setName(file.getName());
                     nodes.add(node);
 
-                } catch (ClassNotFoundException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }

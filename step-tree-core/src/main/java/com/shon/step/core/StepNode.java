@@ -44,4 +44,9 @@ public class StepNode {
      */
     private Class<?> codeClazz;
 
+    /**
+     * 错误码信息
+     */
+    private Object errorCodes;
+
 }
