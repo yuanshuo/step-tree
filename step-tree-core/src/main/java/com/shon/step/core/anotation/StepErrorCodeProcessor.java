@@ -40,6 +40,7 @@ import com.sun.tools.javac.code.TypeTag;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
+import com.sun.tools.javac.tree.JCTree.JCNewClass;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.tree.TreeTranslator;
@@ -134,12 +135,12 @@ public class StepErrorCodeProcessor extends AbstractProcessor {
     private JCTree.JCMethodDecl buildMethod() {
         ListBuffer<JCTree.JCStatement> testStatement3 = new ListBuffer<>();
         //testStatement3.append(treeMaker.Return(treeMaker.Ident(names.fromString("name"))));
-        treeMaker.NewClass(
+        JCNewClass jcNewClass = treeMaker.NewClass(
             null,
             com.sun.tools.javac.util.List.nil(),
             treeMaker.TypeApply(
-                treeMaker.QualIdent((Symbol) elements.getTypeElement("java.util.List")),
-                com.sun.tools.javac.util.List.of(treeMaker.QualIdent((Symbol) elements.getTypeElement("java.lang.String")))
+                treeMaker.QualIdent((Symbol)elements.getTypeElement("java.util.List")),
+                com.sun.tools.javac.util.List.of(treeMaker.QualIdent((Symbol)elements.getTypeElement("java.lang.String")))
             ),
             com.sun.tools.javac.util.List.nil(),
             null
