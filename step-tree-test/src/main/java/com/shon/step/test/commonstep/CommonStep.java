@@ -9,7 +9,7 @@ import com.shon.step.test.demo.ErrorCodeEnum;
  * @author: shiye.ys
  * @date: 2022/5/18
  */
-@StepErrorCode(errorCodeEnum = "ErrorCodeEnum")
+@StepErrorCode(errorCodeEnum = ErrorCodeEnum.class)
 public class CommonStep extends AbstractStep {
     @Override
     protected void execute(StepContext context) {

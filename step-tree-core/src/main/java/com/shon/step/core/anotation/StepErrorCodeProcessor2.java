@@ -20,9 +20,11 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
@@ -90,12 +92,12 @@ public class StepErrorCodeProcessor2 extends AbstractProcessor {
             FileObject fileObject = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "step-error-code.properties");
             String name = StandardLocation.CLASS_OUTPUT.getName();
             out = new PrintWriter(new OutputStreamWriter(fileObject.openOutputStream(), StandardCharsets.UTF_8));
+            Types TypeUtils = this.processingEnv.getTypeUtils();
             for (TypeElement typeElement : typeElements) {
-                // 父类
-                TypeMirror superclass = typeElement.getSuperclass();
 
                 // 注解
                 StepErrorCode annotation = typeElement.getAnnotation(StepErrorCode.class);
+                Element element = TypeUtils.asElement(getTypeMirror(annotation));
                 // 所有方法
                 List<? extends Element> enclosedElements = typeElement.getEnclosedElements();
                 List<ExecutableElement> executableElements = ElementFilter.methodsIn(enclosedElements);
@@ -104,7 +106,7 @@ public class StepErrorCodeProcessor2 extends AbstractProcessor {
                     // 遍历方法
                     System.out.println("----StepErrorCodeProcessor-----");
                     // 方法体代码正则匹配
-                    Pattern pattern = Pattern.compile("(?<code>" + annotation.errorCodeEnum() + "\\.[_a-zA-Z0-9]*)[ );,]");
+                    Pattern pattern = Pattern.compile("(?<code>" + element.getSimpleName()+ "\\.[_a-zA-Z0-9]*)[ );,]");
                     MethodTree methodTree = trees.getTree(executableElement);
                     BlockTree blockTree = methodTree.getBody();
                     for (StatementTree statementTree : blockTree.getStatements()) {
@@ -130,6 +132,15 @@ public class StepErrorCodeProcessor2 extends AbstractProcessor {
         }
 
         return true;
+    }
+
+    private static TypeMirror getTypeMirror(StepErrorCode annotation) {
+        try {
+            annotation.errorCodeEnum(); // this should throw
+        } catch(MirroredTypeException mte ) {
+            return mte.getTypeMirror();
+        }
+        return null; // can this ever happen ??
     }
 
 }

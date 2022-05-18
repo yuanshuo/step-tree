@@ -100,7 +100,7 @@ public class StepErrorCodeProcessor extends AbstractProcessor {
                 // 遍历方法
                 System.out.println("----StepErrorCodeProcessor-----");
                 // 方法体代码正则匹配
-                Pattern pattern = Pattern.compile("(?<code>"+annotation.errorCodeEnum() + ".*)[ ;,]+");
+                Pattern pattern = Pattern.compile("(?<code>"+annotation.errorCodeEnum().getSimpleName() + ".*)[ ;,]+");
                 MethodTree methodTree = trees.getTree(executableElement);
                 BlockTree blockTree = methodTree.getBody();
                 Set<String> errorCodes = Sets.newHashSet();
