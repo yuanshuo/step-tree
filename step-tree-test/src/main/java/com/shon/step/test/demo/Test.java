@@ -1,7 +1,11 @@
 package com.shon.step.test.demo;
 
+import java.io.FileReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -28,6 +32,26 @@ public class Test {
         StepTree stepTree = new StepTree("com.shon.step.test.demostep");
         System.out.println(JSON.toJSONString(stepTree));
         stepTree.execute();
+
+        try {
+
+            //ResourceBundle resource = ResourceBundle.getBundle("generated-sources/annotations/step-error-code.properties");
+            //ResourceBundle resource = ResourceBundle.getBundle("resource.properties");
+            //FileReader fileReader = new FileReader("step-error-code.properties");
+
+            //properties.load(fileReader);
+            //URL resource = Test.class.getResource("resource.properties");
+            //System.out.println(resource.getPath());
+
+            Properties properties = new Properties();
+            InputStream inputStream = Test.class.getClassLoader().getResourceAsStream("step-error-code.properties");
+            properties.load(inputStream);
+
+            String res = properties.getProperty("com.shon.step.test.demostep.s0_SelectOne");
+            System.out.println("resource:" + res);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

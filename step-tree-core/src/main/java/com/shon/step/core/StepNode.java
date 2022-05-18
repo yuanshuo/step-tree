@@ -2,6 +2,7 @@ package com.shon.step.core;
 
 import java.lang.annotation.ElementType;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,6 @@ public class StepNode {
     /**
      * 错误码信息
      */
-    private Object errorCodes;
+    private Set<String> errorCodes;
 
 }

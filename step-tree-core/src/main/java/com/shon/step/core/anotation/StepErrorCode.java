@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * @author: shiye.ys
  * @date: 2022/5/16
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
 public @interface StepErrorCode {
     String errorCodeEnum() default "";

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 
@@ -16,7 +17,7 @@ import com.shon.step.core.StepNode;
 
 public class JarClassReader {
 
-    public static List<StepNode> read(URL url) {
+    public static List<StepNode> read(URL url, Properties errorCodeProps) {
         if (!"jar".equals(url.getProtocol())) {
             return null;
         }

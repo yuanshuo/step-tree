@@ -2,21 +2,28 @@ package com.shon.step.core.util;
 
 import java.io.File;
 import java.lang.annotation.ElementType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.shon.step.core.StepNode;
+import javafx.scene.Parent;
+import org.apache.commons.lang3.StringUtils;
 
 public class FileClassReader {
 
     /**
      * 当前目录的节点
      * @param url
+     * @param errorCodeProps
      * @return
      */
-    public static List<StepNode> read(URL url) {
+    public static List<StepNode> read(URL url, Properties errorCodeProps) {
         File[] files = new File(url.getPath().replaceAll("%20", " ")).listFiles();
         if (files == null) {
             return null;
@@ -43,24 +50,34 @@ public class FileClassReader {
                 String classFullName = pkgPath + "." + className;
                 try {
                     Class<?> clazz = Class.forName(classFullName);
-                    StepNode node = new StepNode();
-                    // 反射获取方法
-                    try {
-                        Method method = clazz.getMethod("getNameTest");
-                        if (null != method) {
-                            Object obj = clazz.newInstance();
-                            Object res = method.invoke(obj);
-                            node.setErrorCodes(res);
-                        }
-                    } catch (Exception e) {
 
+                    HashSet<String> codeSet = Sets.newHashSet();
+                    String errors = errorCodeProps.getProperty(clazz.getName());
+                    if (StringUtils.isNotBlank(errors)) {
+                        codeSet.addAll(Lists.newArrayList(errors.split(",")));
                     }
 
-
+                    // 1层父类
+                    Class<?> parent = clazz.getSuperclass();
+                    String parentErrors = errorCodeProps.getProperty(parent.getName());
+                    if (StringUtils.isNotBlank(parentErrors)) {
+                        codeSet.addAll(Lists.newArrayList(parentErrors.split(",")));
+                    }
+                    // 1层组合类
+                    Field[] declaredFields = clazz.getDeclaredFields();
+                    for (Field declaredField : declaredFields) {
+                        Class<?> declaringClass = declaredField.getType();
+                        String fieldErrors = errorCodeProps.getProperty(declaringClass.getName());
+                        if (StringUtils.isNotBlank(fieldErrors)) {
+                            codeSet.addAll(Lists.newArrayList(fieldErrors.split(",")));
+                        }
+                    }
+                    StepNode node = new StepNode();
                     node.setCodeType(ElementType.TYPE);
                     node.setCodePkgPath(pkgPath);
                     node.setCodeClazz(clazz);
                     node.setName(file.getName());
+                    node.setErrorCodes(codeSet);
                     nodes.add(node);
 
                 } catch (Exception e) {

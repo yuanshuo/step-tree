@@ -1,7 +1,9 @@
 package com.shon.step.core;
 
+import java.io.InputStream;
 import java.lang.annotation.ElementType;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
@@ -29,19 +31,30 @@ public class StepTree {
         root.setCodePkgPath(packagePath);
         root.setCodeType(ElementType.PACKAGE);
 
-        _reflectTree(root);
+        // 加载编译时生成的resource文件
+        Properties errorCodeProps = new Properties();
+        try {
+            InputStream inputStream = StepTree.class.getClassLoader().getResourceAsStream("step-error-code.properties");
+            errorCodeProps.load(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 递归构造tree
+        _reflectTree(root, errorCodeProps);
         _reflectStepDesc(Lists.newArrayList(root));
     }
 
     /**
      * 递归构造步骤树
      * @param root
+     * @param errorCodeProps
      */
-    private void _reflectTree(StepNode root) {
+    private void _reflectTree(StepNode root, Properties errorCodeProps) {
         if (!ElementType.PACKAGE.equals(root.getCodeType())) {
             return;
         }
-        List<StepNode> childs = PackageScanner.scan(root.getCodePkgPath());
+        List<StepNode> childs = PackageScanner.scan(root.getCodePkgPath(), errorCodeProps);
         if (CollectionUtils.isEmpty(childs)) {
             return;
         }
@@ -58,7 +71,7 @@ public class StepTree {
 
         for (StepNode pkgNode : pkgNodes) {
             // 递归查找子节点
-            _reflectTree(pkgNode);
+            _reflectTree(pkgNode, errorCodeProps);
         }
 
         // 采集到叶子开始回溯获取描述

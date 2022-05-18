@@ -51,12 +51,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 
 /**
+ * 编译时动态生成方法体getErrorCodeList
+ * [未实现完成]
  * @author: shiye.ys
  * @date: 2022/5/16
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("com.shon.step.core.anotation.StepErrorCode")
-@AutoService(Processor.class)
+//@AutoService(Processor.class)
 public class StepErrorCodeProcessor extends AbstractProcessor {
 
     private Messager messager;
