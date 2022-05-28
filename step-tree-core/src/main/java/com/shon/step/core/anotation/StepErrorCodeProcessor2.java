@@ -102,11 +102,12 @@ public class StepErrorCodeProcessor2 extends AbstractProcessor {
                 List<? extends Element> enclosedElements = typeElement.getEnclosedElements();
                 List<ExecutableElement> executableElements = ElementFilter.methodsIn(enclosedElements);
                 Set<String> errorCodes = Sets.newHashSet();
+
+                Pattern pattern = Pattern.compile("(?<code>" + element.getSimpleName()+ "\\.[_a-zA-Z0-9]*)[ );,]");
                 for (ExecutableElement executableElement : executableElements) {
                     // 遍历方法
                     System.out.println("----StepErrorCodeProcessor-----");
                     // 方法体代码正则匹配
-                    Pattern pattern = Pattern.compile("(?<code>" + element.getSimpleName()+ "\\.[_a-zA-Z0-9]*)[ );,]");
                     MethodTree methodTree = trees.getTree(executableElement);
                     BlockTree blockTree = methodTree.getBody();
                     for (StatementTree statementTree : blockTree.getStatements()) {

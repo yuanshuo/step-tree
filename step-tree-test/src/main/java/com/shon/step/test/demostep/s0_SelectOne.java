@@ -13,7 +13,8 @@ public class s0_SelectOne extends AbstractStep<DemoStepContext> {
     @Override
     protected void execute(DemoStepContext context) {
         Integer test = 1;
-
-        System.out.println(ErrorCodeEnum.TEST_ERROR_CODE);
+        System.out
+            .println(
+                ErrorCodeEnum.TEST_ERROR_CODE);
     }
 }
