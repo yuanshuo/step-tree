@@ -26,7 +26,7 @@
             let gongsi = document.getElementsByName('reportType')[0].checked;
             let jituan = document.getElementsByName('reportType')[1].checked;
             if (!gongsi && !jituan) {
-                alert('不先选择个汇报类型？');
+                document.getElementById('id01').style.display='block'
                 return;
             }
 
@@ -318,6 +318,14 @@
         <label>今日汇报内容：</label>
         <textarea class="w3-input" rows="10" id="new" placeholder="长按全选复制"></textarea>
 
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <p class="w3-large">❌️先选个汇报类型吧！</p>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
