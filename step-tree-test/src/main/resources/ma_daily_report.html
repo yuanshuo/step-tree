@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="https://7npmedia.w3cschool.cn/w3.css">
     <script src="http://cdn.staticfile.org/moment.js/2.24.0/moment.min.js"></script>
     <script>
+        function numberSum(str) {
+            let res = Number(str);
+            if (!Number.isNaN(res)) {
+                return res;
+            }
+            if (Number.isNaN(res) && str.indexOf('+')>-1) {
+                let arr = str.split('+');
+                let sum = Number(0);
+                arr.forEach(val=>{
+                    sum += Number(val.trim());
+                });
+                return sum;
+            }
+            return NaN;
+        }
         function test() {
             let gongsi = document.getElementsByName('reportType')[0].checked;
             let jituan = document.getElementsByName('reportType')[1].checked;
@@ -49,10 +64,10 @@
             let yangfang = Number(document.getElementById('yangfang').value);
             let qita = Number(document.getElementById('qita').value);
             let rengou = Number(document.getElementById('rengou').value);
-            let rengoujine = Number(document.getElementById('rengoujine').value);
+            let rengoujine = numberSum(document.getElementById('rengoujine').value);
             let hetong = Number(document.getElementById('hetong').value);
-            let hetongjine = Number(document.getElementById('hetongjine').value);
-            let huikuan = Number(document.getElementById('huikuan').value);
+            let hetongjine = numberSum(document.getElementById('hetongjine').value);
+            let huikuan = numberSum(document.getElementById('huikuan').value);
 
             // 月度
             console.log('月度');
@@ -287,16 +302,16 @@
         <input class="w3-input" type="text" id="rengou"/>
 
         <label>认购金额(万)：</label>
-        <input class="w3-input" type="text" id="rengoujine"/>
+        <input class="w3-input" type="text" id="rengoujine" placeholder="支持+运算"/>
 
         <label class="w3-red">当日合同(套)：</label>
         <input class="w3-input" type="text" id="hetong"/>
 
         <label>合同金额(万)：</label>
-        <input class="w3-input" type="text" id="hetongjine"/>
+        <input class="w3-input" type="text" id="hetongjine" placeholder="支持+运算"/>
 
         <label class="w3-red">当日回款(万)：</label>
-        <input class="w3-input" type="text" id="huikuan"/>
+        <input class="w3-input" type="text" id="huikuan" placeholder="支持+运算"/>
 
         <button class="w3-button w3-black" type="button" onclick="test()">点我生成汇报内容</button>
         <p></p>
@@ -308,7 +323,7 @@
 
 
 <div class="w3-container w3-dark-grey">
-    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">小马哥版权所有©2022-V3</font></font></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">小马哥版权所有©2022-v4</font></font></p>
 </div>
 
 </body>
